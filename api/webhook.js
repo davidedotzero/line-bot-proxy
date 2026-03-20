@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
       const body = JSON.stringify(req.body);
 
       // Forward ไป GAS (follow redirects อัตโนมัติ)
-      fetch(GAS_URL, {
+      await fetch(GAS_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: body,
