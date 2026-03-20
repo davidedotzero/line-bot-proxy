@@ -1,7 +1,7 @@
 // LINE Webhook Proxy → Google Apps Script
 // Vercel Serverless Function
 
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyOvWoGx6Q8YBghzDGAcDE_KZkNynpJ73OA09NZNI1bnLLYOry3YWMKbBq4_561YnVAQg/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxuefk6jlOkDQrA2AC9wrGA-KdCW-ey69x6QL-KXYUh49b5ywBde2wQvCFFI0HI-KivIg/exec';
 
 module.exports = async function handler(req, res) {
   // GET = health check
