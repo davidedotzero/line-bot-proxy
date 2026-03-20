@@ -3,7 +3,7 @@
 
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyOvWoGx6Q8YBghzDGAcDE_KZkNynpJ73OA09NZNI1bnLLYOry3YWMKbBq4_561YnVAQg/exec';
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // GET = health check
   if (req.method === 'GET') {
     return res.status(200).send('LINE Bot Proxy is running');
