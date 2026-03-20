@@ -111,16 +111,29 @@ L = Live/Production
 ### Vercel Proxy (Repo นี้)
 
 1. Connect repo นี้กับ Vercel
-2. Vercel จะ auto-deploy ทุกครั้งที่ push ไป `main`
-3. ใช้ Vercel URL เป็น LINE Webhook URL
+2. ตั้ง **Environment Variables** ใน Vercel Dashboard:
+
+   | Variable | ค่า | ที่มา |
+   |----------|-----|-------|
+   | `GAS_URL` | `https://script.google.com/macros/s/.../exec` | GAS Deploy URL |
+   | `LINE_CHANNEL_SECRET` | `(32 hex chars)` | LINE Developers > Channel settings > Channel secret |
+
+3. Vercel จะ auto-deploy ทุกครั้งที่ push ไป `main`
+4. ใช้ Vercel URL เป็น LINE Webhook URL
 
 ### Google Apps Script
 
 1. สร้าง Google Apps Script project ใหม่
 2. วางโค้ด `gas-final-v4.js` (ไม่ได้อยู่ใน repo นี้)
-3. แก้ไข `CONFIG` ให้ตรงกับ LINE Channel Token, Calendar ID, Sheet ID
+3. ไปที่ **Project Settings > Script Properties** เพิ่ม:
+
+   | Property | ค่า |
+   |----------|-----|
+   | `LINE_CHANNEL_TOKEN` | Bearer token จาก LINE Developers > Messaging API |
+   | `LINE_GROUP_ID` | (ระบบจะบันทึกอัตโนมัติเมื่อ Bot เข้ากลุ่ม) |
+
 4. Deploy > New deployment > Web app > Execute as Me
-5. คัดลอก URL (`/exec`) ไปใส่ใน `api/webhook.js` บรรทัด `GAS_URL`
+5. คัดลอก URL (`/exec`) ไปตั้งเป็น `GAS_URL` ใน Vercel
 
 ### LINE Developers Console
 
@@ -128,6 +141,12 @@ L = Live/Production
 2. ตั้ง Webhook URL = Vercel URL ของ repo นี้
 3. เปิด "Use webhook"
 4. ปิด "Auto-reply messages"
+
+## Security
+
+- **LINE Signature Verification** — Proxy ตรวจสอบ `x-line-signature` ด้วย HMAC-SHA256 ก่อน forward ทุก request
+- **No hardcoded secrets** — ทุก secret อยู่ใน Environment Variables (Vercel) หรือ Script Properties (GAS)
+- **Error message suppression** — ไม่ส่ง internal error message กลับไปยัง client
 
 ## Version History
 
@@ -137,6 +156,7 @@ L = Live/Production
 | v2.0 | Add: /ย้าย (move shoot date), syncCalendarToSheet |
 | v3.0 | Fix: parseShootCommand, status detection, Calendar color coding |
 | v4.0 | Add: /แก้ชื่อ, /รายละเอียด, /ลบ (edit name, edit details, delete project) |
+| v4.1 | Security: LINE signature verification, env vars, remove hardcoded secrets |
 
 ## Tech Stack
 
